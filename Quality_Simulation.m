@@ -264,7 +264,6 @@ end
 title('Max HAAs concentration')
 c = colorbar('southoutside');
 c.Label.String = ['HAAs (', G.MSXSpeciesUnits{3}, ')'];
-448065161280137]);
 
  %Unload libraries
 G.unloadMSX;
