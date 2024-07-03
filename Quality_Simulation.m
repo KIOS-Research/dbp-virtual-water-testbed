@@ -5,7 +5,7 @@ clear all; close('all'); clc;
 start_toolkit;
 
 % Load the network
-inpname = 'skeletonized_intodbp_pilot_prepared.inp';
+inpname = 'CY-DBP.inp';
 G = epanet(inpname);
 
 % Load MSX file with reactions
@@ -18,7 +18,7 @@ link_virtual_id = {'N24','N31','p-1748'};
 link_index = G.getLinkIndex(link_virtual_id);
 
 sensor_description={'DMA point','DMA Entrance' ,'Zone Tank','WTP reservoir'};
-sensor_id = {'dist412','dist1268','T_Zone2','WTP'};
+sensor_id = {'dist412','dist1268','T_Zone','WTP'};
 sensor_index = G.getNodeIndex(sensor_id);
 
 %% Get Network data
@@ -26,18 +26,18 @@ demand_pattern = G.getPattern;
 roughness_coeff = G.getLinkRoughnessCoeff;
 
 %% Injection locations
-Zone2Inlet={'N31'};
+ZoneInlet={'N31'};
 ZoneChlorination={'414'};
-Zone2Level={'T_Zone2'};
-Zone2TO4={'232'};
+ZoneLevel={'T_Zone'};
+ZoneTO4={'232'};
 WTP={'WTP'};
 
-IndexTank=G.getNodeIndex(Zone2Level);
+IndexTank=G.getNodeIndex(ZoneLevel);
 IndexChlorination=G.getNodeIndex(ZoneChlorination);
 
 IndexInlet=G.getLinkIndex(ZoneInlet);
 
-IndexZ4=G.getLinkIndex(Zone2TO4);
+IndexZ4=G.getLinkIndex(ZoneTO4);
 IndexWTP=G.getNodeIndex(WTP);
 
 node_id = G.getNodeNameID;
@@ -134,18 +134,18 @@ MeasuredChlorine(:,4)=DWTPorganics1622102023{1:t_d*12*24,10};
 %Sampling measurements
 % StartTime=SensorDateTime(1); EndTime=SensorDateTime(end);
 % 
-% Tinlet=WBLZone2reservoirfreechlorineresidualsampling{:,1};
-% Toutlet=WBLZone2reservoirfreechlorineresidualsampling{:,6};
+% Tinlet=WBLZonereservoirfreechlorineresidualsampling{:,1};
+% Toutlet=WBLZonereservoirfreechlorineresidualsampling{:,6};
 % tf1 =isbetween(Tinlet,StartTime,EndTime);
 % tf2=isbetween(Toutlet,StartTime,EndTime);
 % tfpos1=find(tf1==1);
 % tfpos2=find(tf2==1);
 
-InletResDateTime=WBLZone2reservoirfreechlorineresidualsampling{144,6};
-InletResChlorine=mean(WBLZone2reservoirfreechlorineresidualsampling{72:73,4});
+InletResDateTime=WBLZonereservoirfreechlorineresidualsampling{144,6};
+InletResChlorine=mean(WBLZonereservoirfreechlorineresidualsampling{72:73,4});
 
-OutletResDateTime=WBLZone2reservoirfreechlorineresidualsampling{144,6};
-OutletResChlorine=WBLZone2reservoirfreechlorineresidualsampling{144,9};
+OutletResDateTime=WBLZonereservoirfreechlorineresidualsampling{144,6};
+OutletResChlorine=WBLZonereservoirfreechlorineresidualsampling{144,9};
 %%
 figure
 k=1;
