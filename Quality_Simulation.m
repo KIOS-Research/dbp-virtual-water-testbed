@@ -13,11 +13,11 @@ msxname = 'THMs_HAAs.msx';
 G.loadMSXFile(msxname);
 
 %% Sensor locations
-link_description={'WTP outlet pipe','Before Second Chlorination pipe','Zone2 outlet pipe'};
+link_description={'WTP outlet pipe','Before Second Chlorination pipe','Zone outlet pipe'};
 link_virtual_id = {'N24','N31','p-1748'};
 link_index = G.getLinkIndex(link_virtual_id);
 
-sensor_description={'DMA point','DMA Entrance' ,'Zone2 Tank','WTP reservoir'};
+sensor_description={'DMA point','DMA Entrance' ,'Zone Tank','WTP reservoir'};
 sensor_id = {'dist412','dist1268','T_Zone2','WTP'};
 sensor_index = G.getNodeIndex(sensor_id);
 
@@ -27,15 +27,15 @@ roughness_coeff = G.getLinkRoughnessCoeff;
 
 %% Injection locations
 Zone2Inlet={'N31'};
-Zone2Chlorination={'414'};
+ZoneChlorination={'414'};
 Zone2Level={'T_Zone2'};
 Zone2TO4={'232'};
 WTP={'WTP'};
 
 IndexTank=G.getNodeIndex(Zone2Level);
-IndexChlorination=G.getNodeIndex(Zone2Chlorination);
+IndexChlorination=G.getNodeIndex(ZoneChlorination);
 
-IndexInlet=G.getLinkIndex(Zone2Inlet);
+IndexInlet=G.getLinkIndex(ZoneInlet);
 
 IndexZ4=G.getLinkIndex(Zone2TO4);
 IndexWTP=G.getNodeIndex(WTP);
