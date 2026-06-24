@@ -1,0 +1,73 @@
+[TITLE]
+CY-DBP Simulator
+
+[OPTIONS]
+AREA_UNITS     M2
+RATE_UNITS     DAY
+SOLVER     RK5
+TIMESTEP     300
+ATOL     0.001
+RTOL     0.001
+
+[SPECIES]
+BULK C_FRA MG 0.01 0.001 ;Fast-reacting NOM fraction (mg/L as C)
+BULK C_SRA MG 0.01 0.001  ;Slow-reacting NOM fraction (mg/L as C)	 
+BULK CL2 MG 0.01 0.001 ;Free chlorine (mg/L as Cl2)
+BULK THMs UG 0.01 0.001 ; Total trihalomethanes (µg/L)
+BULK HAAs UG 0.01 0.001 ; Total haloacetic acids (µg/L)
+BULK WaterAge HR 0.01 0.001 ;Water age (hours)
+
+[COEFFICIENTS]
+PARAMETER A 0.5 
+PARAMETER B 10
+PARAMETER TEMP 20 ;actual temperature (°C)
+PARAMETER T_ENV 20 ;specific temperature (°C)
+PARAMETER Y_THM 45 ;THM Yield coefficient (μg-THM/mg-CL)
+PARAMETER Y_HAA 20 ;HAA Yield coefficient (μg-HAA/mg-CL)
+PARAMETER R_fast 2 ;fast reaction rate reference value for a specific temperature 𝑇𝑒𝑛𝑣
+PARAMETER R_slow 0.7560 ;slow reaction rate reference value for a specific temperature 𝑇𝑒𝑛𝑣 
+PARAMETER EOR 1300 ;E/R with 𝐸 the activation energy (Jmol-1) and 𝑅 the universal gas constant (JK-1mol-1) 
+PARAMETER NOM_SURR 1 ;NOM scaling factor to be adjusted based on surrogate value e.g TOC, DOC, UV254, Fluorescence
+PARAMETER Y_NOM_SURR 1 ;NOM Yield scaling factor to be adjusted based on surrogate value e.g TOC, DOC, UV254, Fluorescence
+
+[TERMS]
+Km 1.5826e-4 * RE^0.88 / D
+KWAL A*exp(-B*CL2)
+Kfast NOM_SURR*R_fast *exp(-EOR*(T_ENV-TEMP)/(273+T_ENV)/(273+TEMP)) ;Fisher et al. (2017) 
+Kslow NOM_SURR*R_slow *exp(-EOR*(T_ENV-TEMP)/(273+T_ENV)/(273+TEMP)) ;Fisher et al. (2017) 
+
+
+[PIPES]
+RATE CL2 -Kfast*C_FRA*CL2-Kslow*C_SRA*CL2 - ((4/D)*(KWAL/(1+KWAL/Km)))*CL2
+RATE C_FRA -Kfast*C_FRA*CL2*Y_NOM_SURR
+RATE C_SRA -Kslow*C_SRA*CL2*Y_NOM_SURR
+RATE THMs Y_THM*(Kfast*C_FRA*CL2+Kslow*C_SRA*CL2)
+RATE HAAs Y_HAA*(Kfast*C_FRA*CL2+Kslow*C_SRA*CL2)
+RATE WaterAge 24
+
+
+
+[TANKS]
+RATE CL2 -Kfast*C_FRA*CL2-Kslow*C_SRA*CL2
+RATE C_FRA -Kfast*C_FRA*CL2*Y_NOM_SURR
+RATE C_SRA -Kslow*C_SRA*CL2*Y_NOM_SURR
+RATE THMs Y_THM*(Kfast*C_FRA*CL2+Kslow*C_SRA*CL2)
+RATE HAAs Y_HAA*(Kfast*C_FRA*CL2+Kslow*C_SRA*CL2)
+RATE WaterAge 24
+
+
+[SOURCES]
+
+[QUALITY]
+
+[PARAMETERS]
+
+[PATTERNS]
+TankRAPAT 1
+TankCL2PAT 1
+WTPRAPAT 1
+WTPCL2PAT 1
+
+[REPORT]
+NODES ALL
+LINKS ALL
