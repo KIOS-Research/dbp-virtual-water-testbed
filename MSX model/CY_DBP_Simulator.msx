@@ -33,8 +33,8 @@ PARAMETER Y_NOM_SURR 1 ;NOM Yield scaling factor to be adjusted based on surroga
 [TERMS]
 Km 1.5826e-4 * RE^0.88 / D
 KWAL A*exp(-B*CL2)
-Kfast NOM_SURR*R_fast *exp(-EOR*(T_ENV-TEMP)/(273+T_ENV)/(273+TEMP)) ;Fisher et al. (2017) 
-Kslow NOM_SURR*R_slow *exp(-EOR*(T_ENV-TEMP)/(273+T_ENV)/(273+TEMP)) ;Fisher et al. (2017) 
+Kfast NOM_SURR*R_fast *exp(-EOR*(T_ENV-TEMP)/(273+T_ENV)/(273+TEMP))
+Kslow NOM_SURR*R_slow *exp(-EOR*(T_ENV-TEMP)/(273+T_ENV)/(273+TEMP)) 
 
 
 [PIPES]
